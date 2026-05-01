@@ -1,0 +1,56 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update inno formula
+        if: github.event.client_payload.formula == 'inno'
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+          MAC_ARM: ${{ github.event.client_payload.mac_arm_sha256 }}
+          MAC_X86: ${{ github.event.client_payload.mac_x86_sha256 }}
+          LINUX_ARM: ${{ github.event.client_payload.linux_arm_sha256 }}
+          LINUX_X86: ${{ github.event.client_payload.linux_x86_sha256 }}
+        run: |
+          cd Formula
+          python3 -c "
+          import re, os
+          v = os.environ['VERSION']
+          shas = {
+              'mac_arm': os.environ['MAC_ARM'],
+              'mac_x86': os.environ['MAC_X86'],
+              'linux_arm': os.environ['LINUX_ARM'],
+              'linux_x86': os.environ['LINUX_X86'],
+          }
+          with open('inno.rb') as f:
+              content = f.read()
+          content = re.sub(r'version \"[^\"]+\"', f'version \"{v}\"', content)
+          # Replace sha256 values in order: mac_arm, mac_x86, linux_arm, linux_x86
+          sha_order = ['mac_arm', 'mac_x86', 'linux_arm', 'linux_x86']
+          idx = [0]
+          def replacer(m):
+              key = sha_order[idx[0]]
+              idx[0] += 1
+              return f'sha256 \"{shas[key]}\"'
+          content = re.sub(r'sha256 \"[a-f0-9]{64}\"', replacer, content)
+          with open('inno.rb', 'w') as f:
+              f.write(content)
+          "
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/
+          git diff --staged --quiet || git commit -m "Update ${{ github.event.client_payload.formula }} to ${{ github.event.client_payload.version }}"
+          git push
