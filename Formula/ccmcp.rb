@@ -5,21 +5,21 @@
 class Ccmcp < Formula
   desc "Dynamic CLI + TUI for managing Claude Code MCP servers, plugins, and per-project overrides"
   homepage "https://github.com/ringo380/ccmcp"
-  version "0.12.0"
+  version "0.12.1"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.0/ccmcp_0.12.0_darwin_amd64.tar.gz"
-      sha256 "1fee3c31442af5c559694e12306d93e1a6759312b63d8ac3d54aa72b46871663"
+      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.1/ccmcp_0.12.1_darwin_amd64.tar.gz"
+      sha256 "e62be5901bfed31382af164b8e8fa0b8f32ee9ae993e8066b35e53c097fa82a1"
 
       define_method(:install) do
         bin.install "ccmcp"
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.0/ccmcp_0.12.0_darwin_arm64.tar.gz"
-      sha256 "81166f2be8e382ee2eacfc31b44cbc631acd7c271699ce41d87613bc03a31451"
+      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.1/ccmcp_0.12.1_darwin_arm64.tar.gz"
+      sha256 "0aea5e95bd203ea9d2da949bf19dca234602236c4d59b809e415c7717001e4a8"
 
       define_method(:install) do
         bin.install "ccmcp"
@@ -29,15 +29,15 @@ class Ccmcp < Formula
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.0/ccmcp_0.12.0_linux_amd64.tar.gz"
-      sha256 "55dfc23bafb7c7985b11f5d1cc7c151f75f8ebf9543c8b7afd3334b75696bbd4"
+      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.1/ccmcp_0.12.1_linux_amd64.tar.gz"
+      sha256 "fe04ee8c99f263756c9c7a205fbe1eec61def8df38b9a9e44333e06679601596"
       define_method(:install) do
         bin.install "ccmcp"
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.0/ccmcp_0.12.0_linux_arm64.tar.gz"
-      sha256 "8f6b819314453d6d9b5e1b5f601a319c34fa0a1efa8774ac6736dc3e962ccf21"
+      url "https://github.com/ringo380/ccmcp/releases/download/v0.12.1/ccmcp_0.12.1_linux_arm64.tar.gz"
+      sha256 "3d46d5b0387eef792b12476f47fd193069f04ff0b2263983158d11a9c439d13c"
       define_method(:install) do
         bin.install "ccmcp"
       end
